@@ -31,6 +31,6 @@ class User < ApplicationRecord
   private
   
   def normalize_username
-    self.username = username.&strip&.downcase
+    self.username = username&.strip&.downcase
   end
 end

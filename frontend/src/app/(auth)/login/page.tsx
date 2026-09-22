@@ -1,5 +1,5 @@
 import LoginForm from "@/features/auth/components/login-form";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/utils/general/cn";
 import Link from "next/link";
 
 function LoginPage() {

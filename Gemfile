@@ -18,6 +18,10 @@ gem "tzinfo-data", platforms: %i[ windows jruby ]
 gem 'dotenv-rails', '>= 3.2'
 gem "devise"
 
+gem "jsonapi-serializer"
+gem "jwt"
+gem "json", "2.21.2"
+
 # Use the database-backed adapters for Rails.cache, Active Job, and Action Cable
 gem "solid_cache"
 gem "solid_queue"

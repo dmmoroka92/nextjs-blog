@@ -1,6 +1,5 @@
+import { cn } from "@/lib/utils/general/cn";
 import type { ComponentProps } from "react";
-
-import { cn } from "@/lib/utils";
 
 type InputFieldProps = ComponentProps<"input"> & {
   label: string;

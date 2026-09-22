@@ -1,5 +1,5 @@
 import SignUpForm from "@/features/auth/components/sign-up-form";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/utils/general/cn";
 import Link from "next/link";
 
 function SignupPage() {

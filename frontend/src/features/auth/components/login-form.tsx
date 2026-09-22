@@ -1,10 +1,10 @@
 "use client"
 
 import InputField from "@/app/components/ui/forms/input-field";
-import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { LoginFormData, loginSchema } from "../schemas/login.schema";
+import { cn } from "@/lib/utils/general/cn";
 
 function LoginForm() {
   const {

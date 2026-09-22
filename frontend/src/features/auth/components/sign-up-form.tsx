@@ -1,17 +1,21 @@
 "use client"
 
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
 import InputField from "@/app/components/ui/forms/input-field";
-import { cn } from "@/lib/utils";
+import { toast } from "sonner";
 
+import { cn } from "@/lib/utils/general/cn";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
+import { registerUser } from "../actions/register-user";
 import {
   type SignupFormData,
   signupSchema,
 } from "../schemas/sign-up.schema";
 
 function SignUpForm() {
+  const router = useRouter()
   const {
     register,
     handleSubmit,
@@ -31,8 +35,22 @@ function SignUpForm() {
     },
   });
 
-  function onSubmit(formData: SignupFormData) {
-    console.log("form data:", formData);
+  async function onSubmit(formData: SignupFormData) {
+    const result = await registerUser(formData);
+
+    if (!result.success) {
+      const messages = Object.values(result.errors).flat();
+  
+      toast.error("Registration failed", {
+        description: messages.join("\n"),
+      });
+  
+      return;
+    }
+    
+    toast.success("User was registered successfully");
+    
+    router.push("/")
   }
 
   return (

@@ -1,11 +1,20 @@
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/utils/general/cn";
+import { cookies } from "next/headers";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
 type AuthLayoutProps = {
   children: React.ReactNode;
 };
 
-function AuthLayout({ children }: AuthLayoutProps) {
+async function AuthLayout({ children }: AuthLayoutProps) {
+  const cookieStore = await cookies();
+  const accessToken = cookieStore.get("access_token");
+
+  if (accessToken) {
+    redirect("/");
+  }
+
   return (
     <main className="relative min-h-screen overflow-hidden bg-zinc-950 text-zinc-100">
       {/* Grid background */}
