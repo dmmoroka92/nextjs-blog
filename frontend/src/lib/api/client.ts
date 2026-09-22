@@ -28,7 +28,7 @@ export async function apiFetch<T, TMeta = undefined>(
 
   const json = await response.json();
 
-  if (response.status === 422) {
+  if ([401, 422].includes(response.status)) {
     return {
       success: false,
       data: null,

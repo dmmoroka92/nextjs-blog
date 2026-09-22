@@ -5,8 +5,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { LoginFormData, loginSchema } from "../schemas/login.schema";
 import { cn } from "@/lib/utils/general/cn";
+import { loginUser } from "../actions/login-user";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 function LoginForm() {
+  const router = useRouter()
   const {
     register,
     handleSubmit,
@@ -22,8 +26,24 @@ function LoginForm() {
     }
   })
 
-  function onSubmit(formData: LoginFormData) {
-    console.log("login submit:", formData)
+  async function onSubmit(formData: LoginFormData) {
+    const result = await loginUser(formData)
+    
+    console.log("login result", result)
+    
+    if (!result.success) {
+      const messages = Object.values(result.errors).flat();
+  
+      toast.error("Login failed", {
+        description: messages.join("\n"),
+      });
+  
+      return;
+    }
+    
+    toast.success("User was signed in successfully");
+    
+    router.push("/")
   }
 
   return (

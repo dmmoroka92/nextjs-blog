@@ -1,34 +1,34 @@
-"use server";
+"use server"
 
 import { ACCESS_TOKEN_EXP_MINUTES, REFRESH_TOKEN_EXP_DAYS } from "@/constants/auth";
 import { API_ROUTES } from "@/constants/routes";
 import { apiFetch } from "@/lib/api/client";
 import { setAuthCookie } from "@/lib/auth/cookies";
 import { cookies } from "next/headers";
-import { SignupFormData } from "../schemas/sign-up.schema";
+import { LoginFormData } from "../schemas/login.schema";
 import { ApiResponse, AuthMeta } from "../types/api";
 import { User } from "../types/user";
 
-export async function registerUser(
-  formData: SignupFormData,
+export async function loginUser(
+  formData: LoginFormData
 ): Promise<ApiResponse<User>> {
   const result = await apiFetch<User, AuthMeta>(
-    API_ROUTES.auth.signup,
+    API_ROUTES.auth.login,
     {
       method: "POST",
       body: {
-        user: formData,
-      },
-    },
-  );
+        user: formData
+      }
+    }
+  )
 
   if (!result.success) {
-    return result;
+    return result
   }
 
   if (!result.meta) {
     throw new Error("Auth metadata is missing");
-  }  
+  }
 
   const cookieStore = await cookies();
 
