@@ -1,3 +1,4 @@
+import SignUpForm from "@/features/auth/components/sign-up-form";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 
@@ -20,7 +21,7 @@ function SignupPage() {
         </p>
       </div>
 
-      {/* SignupForm goes here */}
+      <SignUpForm />
 
       <div className="mt-8 border-t border-zinc-800 pt-6">
         <p className="text-sm text-zinc-500">

@@ -1,3 +1,4 @@
+import LoginForm from "@/features/auth/components/login-form";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 
@@ -20,13 +21,13 @@ function LoginPage() {
         </p>
       </div>
 
-      {/* LoginForm goes here */}
+      <LoginForm />
 
       <div className="mt-8 border-t border-zinc-800 pt-6">
         <p className="text-sm text-zinc-500">
           Don&apos;t have an account?{" "}
           <Link
-            href="/signup"
+            href="/sign-up"
             className={cn(
               "font-medium text-emerald-400",
               "transition hover:text-emerald-300"

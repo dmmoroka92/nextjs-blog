@@ -9,15 +9,24 @@ class User < ApplicationRecord
   before_validation :normalize_username       
 
   validates :first_name, presence: true
+  
   validates :last_name, presence: true
+  
   validates :username,
-          presence: true,
-          uniqueness: { case_sensitive: false },
-          length: { in: 3..30 },
-          format: {
-            with: /\A[a-zA-Z0-9_]+\z/,
-            message: "can only contain letters, numbers, and underscores"
-          }
+            presence: true,
+            uniqueness: { case_sensitive: false },
+            length: { in: 3..30 },
+            format: {
+              with: /\A[a-z0-9_]+\z/,
+              message: "can only contain lowercase letters, numbers, and underscores"
+            }
+
+  validates :password,
+            format: {
+              with: /\A(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*_).+\z/,
+              message: "must contain an uppercase letter, lowercase letter, number, and underscore"
+            },
+            allow_nil: true        
 
   private
   
