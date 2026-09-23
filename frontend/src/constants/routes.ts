@@ -5,6 +5,13 @@ export const API_ROUTES = {
     signup: `${API_PREFIX}/auth/sign_up`,
     login: `${API_PREFIX}/auth/login`,
     logout: `${API_PREFIX}/auth/logout`,
-    me: `${API_PREFIX}/auth/me`,
+    refresh: `${API_PREFIX}/auth/refresh`
   },
+  me: `${API_PREFIX}/auth/me`,
 } as const;
+
+export const APP_ROUTES = {
+  auth: {
+    login: "/login"
+  }
+} as const

@@ -9,7 +9,7 @@ type AuthLayoutProps = {
 
 async function AuthLayout({ children }: AuthLayoutProps) {
   const cookieStore = await cookies();
-  const accessToken = cookieStore.get("access_token");
+  const accessToken = cookieStore.get("access_token")?.value;
 
   if (accessToken) {
     redirect("/");

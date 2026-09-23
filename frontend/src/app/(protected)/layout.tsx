@@ -1,14 +1,16 @@
+import { APP_ROUTES } from "@/constants/routes";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { ReactNode } from "react";
 
 async function ProtectedLayout({
   children,
-}: LayoutProps<"/">) {
+}: { children: ReactNode }) {
   const cookieStore = await cookies();
-  const accessToken = cookieStore.get("access_token");
+  const accessToken = cookieStore.get("access_token")?.value;
 
   if (!accessToken) {
-    redirect("/login");
+    redirect(APP_ROUTES.auth.login)
   }
 
   return (

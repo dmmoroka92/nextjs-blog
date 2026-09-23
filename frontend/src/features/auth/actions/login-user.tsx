@@ -1,9 +1,8 @@
 "use server"
 
-import { ACCESS_TOKEN_EXP_MINUTES, REFRESH_TOKEN_EXP_DAYS } from "@/constants/auth";
 import { API_ROUTES } from "@/constants/routes";
 import { apiFetch } from "@/lib/api/client";
-import { setAuthCookie } from "@/lib/auth/cookies";
+import { setAuthCookies } from "@/lib/auth/cookies";
 import { cookies } from "next/headers";
 import { LoginFormData } from "../schemas/login.schema";
 import { ApiResponse, AuthMeta } from "../types/api";
@@ -11,7 +10,7 @@ import { User } from "../types/user";
 
 export async function loginUser(
   formData: LoginFormData
-): Promise<ApiResponse<User>> {
+): Promise<ApiResponse<User, AuthMeta>> {
   const result = await apiFetch<User, AuthMeta>(
     API_ROUTES.auth.login,
     {
@@ -32,23 +31,16 @@ export async function loginUser(
 
   const cookieStore = await cookies();
 
-  setAuthCookie({
+  setAuthCookies({
     cookieStore,
-    name: "access_token",
-    value: result.meta.auth.accessToken,
-    maxAge: ACCESS_TOKEN_EXP_MINUTES * 60,
-  });
-
-  setAuthCookie({
-    cookieStore,
-    name: "refresh_token",
-    value: result.meta.auth.refreshToken,
-    maxAge: REFRESH_TOKEN_EXP_DAYS * 24 * 60 * 60,
-  });
+    accessToken: result.meta.auth.accessToken,
+    refreshToken: result.meta.auth.refreshToken
+  })
 
   return {
     success: true,
     data: result.data,
+    meta: result.meta,
     errors: null
   };
 }

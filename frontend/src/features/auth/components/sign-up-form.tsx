@@ -13,6 +13,7 @@ import {
   type SignupFormData,
   signupSchema,
 } from "../schemas/sign-up.schema";
+import { ApiErrors } from "../types/api";
 
 function SignUpForm() {
   const router = useRouter()
@@ -39,12 +40,14 @@ function SignUpForm() {
     const result = await registerUser(formData);
 
     if (!result.success) {
-      const messages = Object.values(result.errors).flat();
-  
+      const messages = Object.values(result.errors)
+        .flat()
+        .map((error) => error.message);
+    
       toast.error("Registration failed", {
         description: messages.join("\n"),
       });
-  
+    
       return;
     }
     

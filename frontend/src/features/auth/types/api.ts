@@ -18,7 +18,7 @@ export type ApiSuccessResponse<T, TMeta = undefined> = {
 export type ApiFailedResponse = {
   success: false;
   data: null;
-  errors: Record<string, string[]>;
+  errors: ApiErrors;
 };
 
 export type AuthMeta = {
@@ -27,3 +27,10 @@ export type AuthMeta = {
     refreshToken: string;
   };
 };
+
+export type ApiError = {
+  code: string;
+  message: string;
+};
+
+export type ApiErrors = Record<string, ApiError[]>;
