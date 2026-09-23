@@ -1,7 +1,7 @@
 module Auth
   class TokenIssuer
     ALGORITHM = "HS256"
-    ACCESS_TOKEN_EXP_TIME = 15.minutes
+    ACCESS_TOKEN_EXP_TIME = 1.minute
     REFRESH_TOKEN_EXP_TIME = 30.days
 
     Tokens = Data.define(
@@ -50,14 +50,24 @@ module Auth
     end
 
     def issue_refresh_token
-      JWT.encode(
-        payload_for(
-          type: "refresh",
-          exp: REFRESH_TOKEN_EXP_TIME
-        ),
+      payload = payload_for(
+        type: "refresh",
+        exp: REFRESH_TOKEN_EXP_TIME
+      )
+
+      token = JWT.encode(
+        payload,
         secret,
         ALGORITHM
       )
+
+      IssuedRefreshToken.create!(
+        jti: payload[:jti],
+        expires_at: Time.at(payload[:exp]),
+        user_id: user.id
+      )
+
+      token
     end
 
     def secret

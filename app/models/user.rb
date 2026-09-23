@@ -26,7 +26,9 @@ class User < ApplicationRecord
               with: /\A(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*_).+\z/,
               message: "must contain an uppercase letter, lowercase letter, number, and underscore"
             },
-            allow_nil: true        
+            allow_nil: true      
+            
+  has_many :issued_refresh_tokens, dependent: :delete_all          
 
   private
   

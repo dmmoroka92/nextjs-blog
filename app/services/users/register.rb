@@ -30,7 +30,9 @@ module Users
         errors: {}
       )
     rescue ActiveRecord::RecordInvalid => e
-      failure_result(errors: e.record.errors.to_hash)
+      failure_result(
+        errors: ApiErrorsSerializer.call(errors: e.record.errors)
+      )
     end
 
     private

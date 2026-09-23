@@ -43,7 +43,7 @@ module Users
       Result.new(
         payload: nil,
         errors: {
-          base: ["Invalid email or password"]
+          base: Errors::Auth::INVALID_CREDENTIALS
         }
       )
     end

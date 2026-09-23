@@ -1,6 +1,8 @@
 module Api
   module V1
     class RegistrationsController < ApplicationController
+      skip_before_action :authenticate_user!
+      
       def create
         result = Users::Register.call(params: registration_params)
 
@@ -26,13 +28,9 @@ module Api
 
       def registration_params
         params.expect(
-          user: [
-            :first_name,
-            :last_name,
-            :username,
-            :email,
-            :password,
-            :password_confirmation
+          user: %i[
+            first_name last_name username email 
+            password password_confirmation
           ]
         )
       end

@@ -9,6 +9,8 @@ Rails.application.routes.draw do
         scope :auth do
           post "sign_up", to: "registrations#create"
           post "login", to: "sessions#create"
+          post "refresh", to: "sessions#refresh"
+          get "me", to: "sessions#me"
         end
       end
     end
