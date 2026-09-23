@@ -46,6 +46,16 @@ module Api
         render json: UserSerializer.new(current_user).serializable_hash
       end
 
+      def destroy
+        Users::Logout.call(token: bearer_token)
+
+        render json: {
+          meta: {
+            message: "Signed out successfully"
+          }
+        }, status: :ok
+      end
+
       private
       
       def login_params

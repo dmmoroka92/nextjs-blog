@@ -61,15 +61,17 @@ export async function apiFetch<T, TMeta = undefined>(
 
   return {
     success: true,
-
-    data: camelizeKeys(
-      normalizeJsonApiResource(json.data),
-    ) as T,
-
+  
+    data: json.data != null
+      ? camelizeKeys(
+          normalizeJsonApiResource(json.data),
+        ) as T
+      : null as T,
+  
     meta: json.meta
       ? camelizeKeys(json.meta) as TMeta
       : undefined,
-
+  
     errors: null,
   };
 }

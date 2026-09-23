@@ -7,10 +7,11 @@ Rails.application.routes.draw do
     namespace :v1 do
       devise_scope :user do
         scope :auth do
-          post "sign_up", to: "registrations#create"
-          post "login", to: "sessions#create"
-          post "refresh", to: "sessions#refresh"
-          get "me", to: "sessions#me"
+          post "sign_up",  to: "registrations#create"
+          post "login",    to: "sessions#create"
+          post "refresh",  to: "sessions#refresh"
+          delete "logout", to: "sessions#destroy"
+          get "me",        to: "sessions#me"
         end
       end
     end
