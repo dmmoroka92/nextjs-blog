@@ -1,7 +1,7 @@
 module Auth
   class TokenIssuer
     ALGORITHM = "HS256"
-    ACCESS_TOKEN_EXP_TIME = 1.minute
+    ACCESS_TOKEN_EXP_TIME = 15.hours
     REFRESH_TOKEN_EXP_TIME = 30.days
 
     Tokens = Data.define(

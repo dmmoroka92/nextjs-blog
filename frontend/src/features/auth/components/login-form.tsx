@@ -29,8 +29,6 @@ function LoginForm() {
   async function onSubmit(formData: LoginFormData) {
     const result = await loginUser(formData)
     
-    console.log("login result", result)
-    
     if (!result.success) {
       const messages = Object.values(result.errors).flat();
   
