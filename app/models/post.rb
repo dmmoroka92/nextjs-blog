@@ -23,6 +23,12 @@ class Post < ApplicationRecord
   validate :cover_image_type
   validate :cover_image_size
 
+  scope :popular_tags, ->(limit = 6) do
+    tag_counts
+      .order(taggings_count: :desc)
+      .limit(limit)
+  end
+
   private
 
   def generate_slug

@@ -4,16 +4,6 @@ import PostPreview from "@/features/posts/components/post-preview";
 import SearchBar from "@/features/posts/components/search-bar";
 import Tag from "@/features/posts/components/tag";
 
-const tags = [
-  "All",
-  "Rails",
-  "Next.js",
-  "React",
-  "Database",
-  "DevOps",
-  "Career",
-];
-
 type PostsIndexProps = {
   searchParams: Promise<{
     page?: string;
@@ -39,6 +29,7 @@ async function PostsIndex({
 
   const posts = getPostsResult.data;
   const pagination = getPostsResult.meta?.pagination;
+  const popularTags = getPostsResult?.meta?.popularTags
 
   return (
     <div className="w-full">
@@ -56,7 +47,7 @@ async function PostsIndex({
         <SearchBar />
 
         <div className="mt-4 flex flex-wrap gap-3">
-          {tags.map((tag) => (
+          {popularTags && ["All", ...popularTags].map((tag) => (
             <Tag
               key={tag}
               active={tag === "All"}

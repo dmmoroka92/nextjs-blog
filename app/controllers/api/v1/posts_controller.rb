@@ -3,15 +3,14 @@ module Api
     class PostsController < ApplicationController
       def index
         posts = Post.page(params[:page]).per(5)
-
-        serialized_hash =  PostSerializer.new(
+      
+        render json: PostSerializer.new(
           posts,
           meta: {
+            popular_tags: Post.popular_tags.map(&:name),
             pagination: pagination_meta(posts)
           }
-        ).serializable_hash
-      
-        render json: serialized_hash,
+        ).serializable_hash,
         status: :ok
       end
 

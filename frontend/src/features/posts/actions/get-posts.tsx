@@ -6,6 +6,7 @@ import { apiFetch } from "@/lib/api/client";
 import { API_ROUTES } from "@/constants/routes";
 
 type PostsMeta = {
+  popularTags: string[]
   pagination: PaginationMeta
 }
 
