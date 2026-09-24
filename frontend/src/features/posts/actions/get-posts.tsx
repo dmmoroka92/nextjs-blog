@@ -10,10 +10,24 @@ type PostsMeta = {
   pagination: PaginationMeta
 }
 
-export async function getPosts(
-  { page = 1 }: { page?: number },
-): Promise<ApiResponse<Post[], PostsMeta>> {
+type Props = {
+  page?: number,
+  tags?: string[]
+}
+
+export async function getPosts({
+  page = 1,
+  tags = []
+}: Props): Promise<ApiResponse<Post[], PostsMeta>> {
+  const params = new URLSearchParams()
+
+  params.set("page", String(page))
+
+  tags.forEach(tag => {
+    params.append("tags[]", tag)
+  })
+
   return apiFetch<Post[], PostsMeta> (
-    `${API_ROUTES.posts.index}?page=${page}`,
+    `${API_ROUTES.posts.index}?${params.toString()}`,
   )
 }

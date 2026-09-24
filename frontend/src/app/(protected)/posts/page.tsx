@@ -2,22 +2,35 @@ import Pagination from "@/features/pagination/components/pagination";
 import { getPosts } from "@/features/posts/actions/get-posts";
 import PostPreview from "@/features/posts/components/post-preview";
 import SearchBar from "@/features/posts/components/search-bar";
-import Tag from "@/features/posts/components/tag";
+import TagFilters from "@/features/posts/components/tag-filters";
 
 type PostsIndexProps = {
   searchParams: Promise<{
     page?: string;
+    tags?: string | string[]
   }>
 };
 
 async function PostsIndex({
   searchParams
 }: PostsIndexProps) {
-  const { page } = await searchParams;
-
+  const {
+    page,
+    tags: rawTags,
+  } = await searchParams;
+  
   const currentPage = Number(page) || 1;
+  
+  const tags = rawTags
+    ? Array.isArray(rawTags)
+      ? rawTags
+      : [rawTags]
+    : [];
 
-  const getPostsResult = await getPosts({ page: currentPage })
+  const getPostsResult = await getPosts({
+    page: currentPage,
+    tags
+  })
 
   if (!getPostsResult.success) {
     return (
@@ -29,7 +42,7 @@ async function PostsIndex({
 
   const posts = getPostsResult.data;
   const pagination = getPostsResult.meta?.pagination;
-  const popularTags = getPostsResult?.meta?.popularTags
+  const popularTags = getPostsResult?.meta?.popularTags ?? []
 
   return (
     <div className="w-full">
@@ -44,17 +57,10 @@ async function PostsIndex({
       </header>
 
       <div className="mt-8">
-        <SearchBar />
+        <div className="flex flex-col gap-4">
+          <SearchBar />
 
-        <div className="mt-4 flex flex-wrap gap-3">
-          {popularTags && ["All", ...popularTags].map((tag) => (
-            <Tag
-              key={tag}
-              active={tag === "All"}
-            >
-              {tag}
-            </Tag>
-          ))}
+          <TagFilters tags={popularTags} />
         </div>
 
         <div className="mt-6 divide-y divide-zinc-800">

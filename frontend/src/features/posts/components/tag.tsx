@@ -3,15 +3,18 @@ import { cn } from "@/lib/utils/general/cn";
 type TagProps = {
   children: React.ReactNode;
   active?: boolean;
+  onClick: () => void
 };
 
 function Tag({
   children,
   active = false,
+  onClick
 }: TagProps) {
   return (
     <button
       type="button"
+      onClick={onClick}
       className={cn(
         "rounded-md border px-3 py-1",
         "text-xs font-medium transition-colors",

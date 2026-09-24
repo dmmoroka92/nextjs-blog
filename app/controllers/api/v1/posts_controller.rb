@@ -2,7 +2,10 @@ module Api
   module V1
     class PostsController < ApplicationController
       def index
-        posts = Post.page(params[:page]).per(5)
+        posts = Posts::IndexQuery.call(
+          relation: current_user.posts,
+          params:
+        )
       
         render json: PostSerializer.new(
           posts,
