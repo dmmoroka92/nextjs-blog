@@ -3,7 +3,7 @@ import "server-only";
 import { ApiError, ApiResponse } from "@/features/auth/types/api";
 import { camelizeKeys, decamelizeKeys } from "humps";
 import { cookies } from "next/headers";
-import { normalizeJsonApiResource } from "../utils/api/normalize";
+import { normalizeJsonApiCollection, normalizeJsonApiResource } from "../utils/api/normalize";
 
 type JsonBody = Record<string, unknown>;
 
@@ -76,20 +76,25 @@ export async function apiFetch<T, TMeta = undefined>(
     );
   }
 
+  const normalizedData =
+    json.data == null
+      ? null
+      : Array.isArray(json.data)
+        ? normalizeJsonApiCollection(json.data)
+        : normalizeJsonApiResource(json.data);
+
   return {
     success: true,
-
+  
     data:
-      json.data != null
-        ? (camelizeKeys(
-            normalizeJsonApiResource(json.data),
-          ) as T)
+      normalizedData != null
+        ? (camelizeKeys(normalizedData) as T)
         : (null as T),
-
+  
     meta: json.meta
       ? (camelizeKeys(json.meta) as TMeta)
       : undefined,
-
+  
     errors: null,
-  };
+  }
 }

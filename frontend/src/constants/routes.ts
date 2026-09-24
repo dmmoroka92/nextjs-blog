@@ -15,6 +15,7 @@ export const API_ROUTES = {
 
   posts: {
     create: buildRoute("/posts"),
+    index: buildRoute("/posts")
   },
 } as const;
 
@@ -25,6 +26,7 @@ export const APP_ROUTES = {
   },
   posts: {
     new: "/posts/new",
-    index: "/posts"
+    index: "/posts",
+    show: (slug: string) => `/posts/${slug}`
   }
 } as const;

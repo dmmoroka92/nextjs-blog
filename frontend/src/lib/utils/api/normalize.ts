@@ -12,5 +12,5 @@ export function normalizeJsonApiResource<T>(
 export function normalizeJsonApiCollection<T>(
   resources: JsonApiResource<T>[],
 ): Array<T & { id: string }> {
-  return resources.map(normalizeJsonApiResource);
+  return resources.map(normalizeJsonApiResource) 
 }

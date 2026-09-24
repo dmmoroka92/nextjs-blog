@@ -34,3 +34,12 @@ export type ApiError = {
 };
 
 export type ApiErrors = Record<string, ApiError[]>;
+
+export type PaginationMeta = {
+  currentPage: number
+  totalPages: number
+  totalItems: number
+  itemsPerPage: number
+  nextPage: number
+  prevPage: number
+}

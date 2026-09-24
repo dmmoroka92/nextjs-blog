@@ -34,5 +34,16 @@ class ApplicationController < ActionController::API
   private
 
   attr_reader :currnet_user
+
+  def pagination_meta(collection)
+    {
+      current_page: collection.current_page,
+      total_pages: collection.total_pages,
+      total_items: collection.total_count,
+      items_per_page: collection.limit_value,
+      next_page: collection.next_page,
+      prev_page: collection.prev_page
+    }
+  end
 end
 

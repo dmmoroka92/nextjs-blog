@@ -15,7 +15,7 @@ Rails.application.routes.draw do
         end
       end
 
-      resources :posts, only: %i[show create update destroy]
+      resources :posts, only: %i[index show create update destroy]
     end
   end
 end

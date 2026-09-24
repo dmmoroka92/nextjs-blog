@@ -5,7 +5,8 @@ class PostSerializer
              :slug,
              :excerpt,
              :status,
-             :content
+             :content,
+             :created_at
     
   attribute :cover_image_url do |post|
     if post.cover_image.attached?

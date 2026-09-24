@@ -1,6 +1,21 @@
 module Api
   module V1
     class PostsController < ApplicationController
+      def index
+        posts = Post.page(params[:page]).per(5)
+
+        serialized_hash =  PostSerializer.new(
+          posts,
+          meta: {
+            pagination: pagination_meta(posts)
+          }
+        ).serializable_hash
+      
+        Rails.logger.debug serialized_hash.inspect
+        render json: serialized_hash,
+        status: :ok
+      end
+
       def show
 
       end

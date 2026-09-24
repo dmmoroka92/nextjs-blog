@@ -255,17 +255,6 @@ function PostForm() {
 
       <div className="flex items-center justify-between pt-1">
         <button
-          type="button"
-          className={cn(
-            "rounded-md border border-zinc-700 px-4 py-2.5",
-            "text-sm font-medium text-zinc-200",
-            "transition-colors hover:bg-zinc-900",
-          )}
-        >
-          Save draft
-        </button>
-
-        <button
           type="submit"
           disabled={isSubmitting}
           className={cn(

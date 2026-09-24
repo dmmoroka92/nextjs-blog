@@ -15,14 +15,6 @@ type PostMeta = {
 export async function createPost(
   postData: PostFormData,
 ): Promise<ApiResponse<Post, PostMeta>> {
-  const cookieStore = await cookies();
-  const accessToken =
-    cookieStore.get("access_token")?.value;
-
-  if (!accessToken) {
-    redirect(APP_ROUTES.auth.login);
-  }
-
   const body = new FormData();
 
   body.append("post[title]", postData.title);
