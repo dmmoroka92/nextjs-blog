@@ -14,4 +14,5 @@ export type Post = {
   content: PostContent | null
   coverImageUrl: string | null
   createdAt: string
+  tags: string[]
 };

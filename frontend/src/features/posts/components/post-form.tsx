@@ -5,7 +5,7 @@ import SelectField from "@/app/components/ui/forms/select-field";
 import { APP_ROUTES } from "@/constants/routes";
 import { cn } from "@/lib/utils/general/cn";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ImageIcon, X } from "lucide-react";
+import { ImageIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -13,6 +13,7 @@ import { toast } from "sonner";
 import { createPost } from "../actions/create-post";
 import { PostFormData, postSchema } from "../schemas/post.schema";
 import { PostEditor } from "./post-editor/post-editor";
+import TagInput from "@/app/components/ui/forms/tag-input";
 
 function PostForm() {
   const router = useRouter()
@@ -21,7 +22,6 @@ function PostForm() {
     register,
     handleSubmit,
     watch,
-    setValue,
     formState: {
       errors,
       isSubmitting
@@ -32,7 +32,8 @@ function PostForm() {
       title: "",
       slug: "",
       excerpt: "",
-      status: "draft"
+      status: "draft",
+      tags: []
     }
   })
 
@@ -220,6 +221,18 @@ function PostForm() {
           </p>
         )}
       </div>
+
+      <Controller
+        name="tags"
+        control={control}
+        render={({ field, fieldState }) => (
+          <TagInput
+            value={field.value}
+            onChange={field.onChange}
+            error={fieldState.error?.message}
+          />
+        )}
+      />
 
       <Controller
         name="content"

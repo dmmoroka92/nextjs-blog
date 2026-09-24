@@ -5,8 +5,6 @@ import { PostFormData } from "../schemas/post.schema";
 import { Post } from "../types";
 import { apiFetch } from "@/lib/api/client";
 import { API_ROUTES, APP_ROUTES } from "@/constants/routes";
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
 
 type PostMeta = {
   message: string
@@ -26,6 +24,12 @@ export async function createPost(
 
   if (postData.excerpt) {
     body.append("post[excerpt]", postData.excerpt);
+  }
+
+  if (postData.tags.length > 0) {
+    postData.tags.forEach((tag) => {
+      body.append("post[tag_list][]", tag);
+    });
   }
 
   if (postData.content) {

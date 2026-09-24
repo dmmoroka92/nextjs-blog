@@ -8,6 +8,7 @@ import { APP_ROUTES } from "@/constants/routes";
 function PostPreview({
   title,
   slug,
+  tags,
   excerpt,
   createdAt
 }: Post) {
@@ -47,7 +48,7 @@ function PostPreview({
           {excerpt}
         </p>
 
-        {/* <div className="mt-2 flex flex-wrap gap-2">
+        <div className="mt-2 flex flex-wrap gap-2">
           {tags.map((tag) => (
             <span
               key={tag}
@@ -60,7 +61,7 @@ function PostPreview({
               {tag}
             </span>
           ))}
-        </div> */}
+        </div>
       </div>
 
       <div

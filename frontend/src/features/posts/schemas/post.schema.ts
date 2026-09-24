@@ -39,6 +39,9 @@ export const postSchema = z.object({
     "draft",
     "published"
   ]),
+
+  tags: z
+    .array(z.string().trim().min(1))
 })
 .superRefine((data, ctx) => {
   if (data.status === "published" && !data.content) {

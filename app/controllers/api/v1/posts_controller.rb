@@ -11,7 +11,6 @@ module Api
           }
         ).serializable_hash
       
-        Rails.logger.debug serialized_hash.inspect
         render json: serialized_hash,
         status: :ok
       end
@@ -22,7 +21,7 @@ module Api
 
       def create
         post = current_user.posts.new(post_params)
-
+        
         if post.save
           render json: PostSerializer.new(
           post,
@@ -57,6 +56,7 @@ module Api
           :excerpt,
           :cover_image,
           content: {},
+          tag_list: []
         )
       end
     end

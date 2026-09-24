@@ -1,12 +1,14 @@
 class PostSerializer
   include JSONAPI::Serializer
   
-  attributes :title,
-             :slug,
-             :excerpt,
-             :status,
-             :content,
-             :created_at
+  attributes(
+    :slug,
+    :title,
+    :excerpt,
+    :status,
+    :content,
+    :created_at
+  )
     
   attribute :cover_image_url do |post|
     if post.cover_image.attached?
@@ -15,6 +17,10 @@ class PostSerializer
         only_path: true
       )
     end
+  end
+
+  attribute :tags do |post|
+    post.tag_list
   end
 
   belongs_to :user

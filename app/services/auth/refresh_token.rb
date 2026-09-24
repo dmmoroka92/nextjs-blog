@@ -16,7 +16,7 @@ module Auth
 
     def call
       payload = Auth::TokenDecoder.call(token:)
-      Rails.logger.debug("[refresh_tokem] payload: #{payload}")
+      
       unless payload["type"] == "refresh"
         return failure_result(api_error: Errors::Auth::INVALID_REFRESH_TOKEN)
       end

@@ -1,4 +1,6 @@
 class Post < ApplicationRecord
+  acts_as_taggable_on :tags
+  
   IMAGE_SIZE_MEGABYTES = 5
   IMAGE_TYPES = %w[jpeg png webp].freeze
 
