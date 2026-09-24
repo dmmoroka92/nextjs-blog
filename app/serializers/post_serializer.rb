@@ -13,8 +13,7 @@ class PostSerializer
   attribute :cover_image_url do |post|
     if post.cover_image.attached?
       Rails.application.routes.url_helpers.rails_blob_url(
-        post.cover_image,
-        only_path: true
+        post.cover_image
       )
     end
   end

@@ -1,7 +1,29 @@
-export type JsonApiResource<T> = {
+export type JsonApiResourceIdentifier = {
+  id: string;
+  type: string;
+};
+
+export type JsonApiRelationship = {
+  data:
+    | JsonApiResourceIdentifier
+    | JsonApiResourceIdentifier[]
+    | null;
+};
+
+export type JsonApiResource<T = Record<string, unknown>> = {
   id: string;
   type: string;
   attributes: T;
+  relationships?: Record<string, JsonApiRelationship>;
+};
+
+export type JsonApiDocument<T = Record<string, unknown>, TMeta = undefined> = {
+  data:
+    | JsonApiResource<T>
+    | JsonApiResource<T>[]
+    | null;
+  included?: JsonApiResource[];
+  meta?: TMeta;
 };
 
 export type ApiResponse<T, TMeta = undefined> =

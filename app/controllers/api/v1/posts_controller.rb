@@ -18,7 +18,13 @@ module Api
       end
 
       def show
+        post = current_user.posts.find_by!(slug: params[:slug])
 
+        render json: PostSerializer.new(
+          post,
+          include: [:user]
+        ).serializable_hash,
+        status: :ok  
       end
 
       def create
@@ -51,7 +57,7 @@ module Api
       private
 
       def post_params
-        params.require(:post).permit(
+        permitted = params.require(:post).permit(
           :title,
           :slug,
           :status,
@@ -60,6 +66,16 @@ module Api
           :content,
           tag_list: []
         )
+        
+        permitted[:content] = parse_content(permitted[:content])
+
+        permitted
+      end
+
+      def parse_content(content)
+        return if content.blank?
+      
+        JSON.parse(content)
       end
     end
   end

@@ -1,9 +1,12 @@
+import { User } from "../auth/types/user";
+import type { JSONContent } from "@tiptap/core";
+
 export type PostStatus =
   | "draft"
   | "published"
   | "archived";
 
-export type PostContent = Record<string, unknown>;
+export type PostContent = JSONContent
 
 export type Post = {
   id: string
@@ -15,4 +18,6 @@ export type Post = {
   coverImageUrl: string | null
   createdAt: string
   tags: string[]
+
+  user: User
 };

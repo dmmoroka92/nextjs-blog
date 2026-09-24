@@ -1,9 +1,13 @@
 import "server-only";
 
-import { ApiError, ApiResponse } from "@/features/auth/types/api";
+import {
+  ApiError,
+  ApiResponse,
+} from "@/features/auth/types/api";
 import { camelizeKeys, decamelizeKeys } from "humps";
 import { cookies } from "next/headers";
-import { normalizeJsonApiCollection, normalizeJsonApiResource } from "../utils/api/normalize";
+
+import { normalizeJsonApi } from "../utils/api/normalize";
 
 type JsonBody = Record<string, unknown>;
 
@@ -37,7 +41,6 @@ export async function apiFetch<T, TMeta = undefined>(
     `${process.env.API_HOST}${url}`,
     {
       ...options,
-
       headers: {
         Accept: "application/json",
 
@@ -51,7 +54,6 @@ export async function apiFetch<T, TMeta = undefined>(
 
         ...options.headers,
       },
-
       body,
     },
   );
@@ -76,25 +78,23 @@ export async function apiFetch<T, TMeta = undefined>(
     );
   }
 
-  const normalizedData =
-    json.data == null
-      ? null
-      : Array.isArray(json.data)
-        ? normalizeJsonApiCollection(json.data)
-        : normalizeJsonApiResource(json.data);
+  const normalizedData = normalizeJsonApi(
+    json.data,
+    json.included ?? [],
+  );
 
   return {
     success: true,
-  
+
     data:
-      normalizedData != null
+      normalizedData !== null
         ? (camelizeKeys(normalizedData) as T)
         : (null as T),
-  
+
     meta: json.meta
       ? (camelizeKeys(json.meta) as TMeta)
       : undefined,
-  
+
     errors: null,
-  }
+  };
 }

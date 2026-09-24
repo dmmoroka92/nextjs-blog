@@ -13,10 +13,11 @@ import {
   Redo2,
   Undo2,
 } from "lucide-react";
+
 import EditorButton from "./editor-button";
 
 type PostEditorProps = {
-  invalid: boolean
+  invalid: boolean;
   value?: Record<string, unknown>;
   onChange: (value: Record<string, unknown>) => void;
 };
@@ -24,13 +25,11 @@ type PostEditorProps = {
 export function PostEditor({
   invalid,
   value,
-  onChange
+  onChange,
 }: PostEditorProps) {
   const editor = useEditor({
     extensions: [StarterKit],
-
     content: value,
-
     immediatelyRender: false,
 
     onUpdate: ({ editor }) => {
@@ -50,6 +49,41 @@ export function PostEditor({
   if (!editor) {
     return null;
   }
+  
+  const toggleCodeBlock = () => {
+    const { from, to, empty } = editor.state.selection;
+  
+    if (empty) {
+      editor
+        .chain()
+        .focus()
+        .toggleCodeBlock()
+        .run();
+  
+      return;
+    }
+  
+    const selectedText = editor.state.doc.textBetween(
+      from,
+      to,
+      "\n",
+    );
+  
+    editor
+      .chain()
+      .focus()
+      .deleteSelection()
+      .insertContent({
+        type: "codeBlock",
+        content: [
+          {
+            type: "text",
+            text: selectedText,
+          },
+        ],
+      })
+      .run();
+  };
 
   return (
     <div
@@ -86,9 +120,7 @@ export function PostEditor({
 
         <EditorButton
           active={editor.isActive("codeBlock")}
-          onClick={() =>
-            editor.chain().focus().toggleCodeBlock().run()
-          }
+          onClick={toggleCodeBlock}
         >
           <Code2 className="size-4" />
         </EditorButton>

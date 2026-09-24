@@ -1,4 +1,7 @@
 class ApplicationController < ActionController::API
+  rescue_from ActiveRecord::RecordNotFound,
+    with: :render_not_found
+
   before_action :authenticate_user!
 
   def authenticate_user!
@@ -45,5 +48,15 @@ class ApplicationController < ActionController::API
       prev_page: collection.prev_page
     }
   end
-end
 
+  def render_not_found(exception)
+    render json: {
+      errors: [
+        ApiError.new(
+          code: Errors::RECORD_NOT_FOUND,
+          message: exception.message
+        )
+      ]
+    }, status: :not_found
+  end
+end
