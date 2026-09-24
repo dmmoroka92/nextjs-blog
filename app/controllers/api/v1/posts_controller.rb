@@ -57,7 +57,7 @@ module Api
           :status,
           :excerpt,
           :cover_image,
-          content: {},
+          :content,
           tag_list: []
         )
       end

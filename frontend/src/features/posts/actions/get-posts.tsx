@@ -12,16 +12,20 @@ type PostsMeta = {
 
 type Props = {
   page?: number,
-  tags?: string[]
+  tags?: string[],
+  search?: string
 }
 
 export async function getPosts({
   page = 1,
-  tags = []
+  tags = [],
+  search = ""
 }: Props): Promise<ApiResponse<Post[], PostsMeta>> {
   const params = new URLSearchParams()
 
   params.set("page", String(page))
+  
+  params.set("search", search)
 
   tags.forEach(tag => {
     params.append("tags[]", tag)

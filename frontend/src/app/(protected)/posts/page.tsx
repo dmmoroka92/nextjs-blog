@@ -7,7 +7,8 @@ import TagFilters from "@/features/posts/components/tag-filters";
 type PostsIndexProps = {
   searchParams: Promise<{
     page?: string;
-    tags?: string | string[]
+    tags?: string | string[],
+    search?: string
   }>
 };
 
@@ -17,6 +18,7 @@ async function PostsIndex({
   const {
     page,
     tags: rawTags,
+    search
   } = await searchParams;
   
   const currentPage = Number(page) || 1;
@@ -29,7 +31,8 @@ async function PostsIndex({
 
   const getPostsResult = await getPosts({
     page: currentPage,
-    tags
+    tags,
+    search
   })
 
   if (!getPostsResult.success) {
@@ -72,7 +75,7 @@ async function PostsIndex({
           ))}
         </div>
 
-        <div className="mt-6 flex justify-end">
+        <div className="mt-6 flex justify-center">
           <Pagination pagination={pagination} />
         </div>
       </div>

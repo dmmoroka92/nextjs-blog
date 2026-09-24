@@ -15,7 +15,11 @@ module Posts
       posts = relation
 
       if params[:tags].present?
-        posts = filter_by_tags(posts)
+        posts = filter_by_tags(posts:)
+      end
+
+      if params[:search].present?
+        posts = filter_by_search(query: params[:search], posts:)
       end
 
       posts
@@ -35,10 +39,22 @@ module Posts
       ].min
     end
 
-    def filter_by_tags(posts)
+    def filter_by_tags(posts:)
       Array(params[:tags]).reduce(posts) do |relation, tag|
         relation.tagged_with(tag)
       end
+    end
+
+    def filter_by_search(query:, posts:)
+      query = ActiveRecord::Base.sanitize_sql_like(query.strip)
+    
+      posts.where(
+        <<~SQL.squish,
+          title LIKE :query
+          OR JSON_SEARCH(content, 'all', :query) IS NOT NULL
+        SQL
+        query: "%#{query}%"
+      )
     end
   end
 end
