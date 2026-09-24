@@ -1,4 +1,5 @@
-import LoginForm from "@/features/auth/components/login-form";
+import { APP_ROUTES } from "@/constants/routes";
+import LoginForm from "@/features/auth/components/auth/login-form";
 import { cn } from "@/lib/utils/general/cn";
 import Link from "next/link";
 
@@ -27,7 +28,7 @@ function LoginPage() {
         <p className="text-sm text-zinc-500">
           Don&apos;t have an account?{" "}
           <Link
-            href="/sign-up"
+            href={APP_ROUTES.auth.signUp}
             className={cn(
               "font-medium text-emerald-400",
               "transition hover:text-emerald-300"

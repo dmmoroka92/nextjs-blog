@@ -4,8 +4,10 @@ class ApplicationController < ActionController::API
   def authenticate_user!
     token = bearer_token
     payload = Auth::TokenDecoder.call(token:)
-    
-    return unauthorized unless payload["type"] == "access"
+ 
+    unless payload["type"] == "access"
+      return unauthorized(api_error: Errors::Auth::INVALID_ACCESS_TOKEN)
+    end
   
     @current_user = User.find(payload["sub"])
   rescue JWT::ExpiredSignature

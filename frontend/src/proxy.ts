@@ -90,5 +90,6 @@ function isTokenExpired(token: string) {
 export const config = {
   matcher: [
     "/",
+    "/posts/:path*"
   ],
 };

@@ -1,17 +1,30 @@
-const API_PREFIX = "/api/v1"
+const API_PREFIX = "/api/v1";
+
+function buildRoute(path: string) {
+  return `${API_PREFIX}${path}`;
+}
 
 export const API_ROUTES = {
   auth: {
-    login: `${API_PREFIX}/auth/login`,
-    logout: `${API_PREFIX}/auth/logout`,
-    signup: `${API_PREFIX}/auth/sign_up`,
-    refresh: `${API_PREFIX}/auth/refresh`
+    login: buildRoute("/auth/login"),
+    logout: buildRoute("/auth/logout"),
+    signup: buildRoute("/auth/sign_up"),
+    refresh: buildRoute("/auth/refresh"),
+    me: buildRoute("/auth/me"),
   },
-  me: `${API_PREFIX}/auth/me`,
+
+  posts: {
+    create: buildRoute("/posts"),
+  },
 } as const;
 
 export const APP_ROUTES = {
   auth: {
-    login: "/login"
+    login: "/login",
+    signUp: "/sign-up"
+  },
+  posts: {
+    new: "/posts/new",
+    index: "/posts"
   }
-} as const
+} as const;

@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import {
   Bookmark,
@@ -8,6 +10,8 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils/general/cn";
 import { LogoutButton } from "./logout-button";
+import { APP_ROUTES } from "@/constants/routes";
+import { usePathname } from "next/navigation";
 
 const navigation = [
   {
@@ -17,7 +21,7 @@ const navigation = [
   },
   {
     label: "My Posts",
-    href: "/posts",
+    href: APP_ROUTES.posts.index,
     icon: FileText,
   },
   {
@@ -38,6 +42,8 @@ const navigation = [
 ];
 
 export function Sidebar() {
+  const path = usePathname()
+
   return (
     <aside className="flex w-64 shrink-0 flex-col border-r border-zinc-800 bg-zinc-950">
       <div className="flex h-16 items-center border-b border-zinc-800 px-6">
@@ -56,7 +62,8 @@ export function Sidebar() {
             href={href}
             className={cn(
               "flex items-center gap-3 rounded-md px-3 py-2",
-              "text-sm text-zinc-400 transition-colors hover:bg-zinc-900 hover:text-zinc-100"
+              "text-sm text-zinc-400 transition-colors hover:bg-zinc-900 hover:text-zinc-100",
+              href === path && "text-zinc-100 bg-zinc-900"
             )}
           >
             <Icon className="size-4" />

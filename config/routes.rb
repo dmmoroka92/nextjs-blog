@@ -14,6 +14,8 @@ Rails.application.routes.draw do
           get "me",        to: "sessions#me"
         end
       end
+
+      resources :posts, only: %i[show create update destroy]
     end
   end
 end
