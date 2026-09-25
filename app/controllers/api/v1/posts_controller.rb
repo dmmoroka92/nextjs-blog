@@ -63,7 +63,18 @@ module Api
       end
 
       def destroy
-
+        if @post.destroy!
+          render json: {
+            data: nil,
+            meta: { message: "Post destroyed successfuly" }
+          }
+        else
+          render json: {
+            meta: {
+              errors: @post.errors
+            }
+          }, status: :unprocessable_entity
+        end
       end
 
       private

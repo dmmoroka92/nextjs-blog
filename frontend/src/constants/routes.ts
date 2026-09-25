@@ -16,8 +16,9 @@ export const API_ROUTES = {
   posts: {
     create: buildRoute("/posts"),
     index: buildRoute("/posts"),
+    show: (slug: string) => buildRoute(`/posts/${slug}`),
     update: (slug: string) => buildRoute(`/posts/${slug}`),
-    show: (slug: string) => buildRoute(`/posts/${slug}`)
+    delete: (slug: string) => buildRoute(`/posts/${slug}`)
   },
 
   dashboard: {
