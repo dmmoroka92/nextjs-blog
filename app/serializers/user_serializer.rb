@@ -7,4 +7,6 @@ class UserSerializer
              :email,
              :password,
              :password_confirmation
+
+  has_many :comments           
 end

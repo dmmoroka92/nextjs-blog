@@ -26,8 +26,8 @@ class User < ApplicationRecord
             allow_nil: true      
             
   has_many :posts, dependent: :destroy
-  has_many :issued_refresh_tokens, dependent: :delete_all       
-  has_many :comments, dependent: :destroy   
+  has_many :issued_refresh_tokens, dependent: :delete_all
+  has_many :comments, dependent: :destroy
 
   private
   

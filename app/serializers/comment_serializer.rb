@@ -4,5 +4,4 @@ class CommentSerializer
   attributes :body, :created_at
 
   belongs_to :user
-  belongs_to :post
 end

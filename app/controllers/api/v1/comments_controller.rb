@@ -13,7 +13,7 @@ class Api::V1::CommentsController < ApplicationController
   def create
     comment = @post.comments.new(comment_params)
     comment.user = current_user
-
+    
     if comment.save
       render json: CommentSerializer.new(
         comment,

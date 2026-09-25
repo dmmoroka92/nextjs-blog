@@ -8,9 +8,11 @@ type NormalizedResource = Record<string, unknown>;
 
 type IncludedMap = Map<string, JsonApiResource>;
 
+type VisitedResources = Set<string>;
+
 function resourceKey(
   resource: JsonApiResourceIdentifier,
-) {
+): string {
   return `${resource.type}:${resource.id}`;
 }
 
@@ -28,27 +30,44 @@ function buildIncludedMap(
 function normalizeRelationship(
   data: JsonApiRelationship["data"],
   includedMap: IncludedMap,
+  visited: VisitedResources,
 ): unknown {
   if (data === null) {
     return null;
   }
 
   if (Array.isArray(data)) {
-    return data.map((resource) =>
-      normalizeIdentifier(resource, includedMap),
+    return data.map((identifier) =>
+      normalizeIdentifier(
+        identifier,
+        includedMap,
+        visited,
+      ),
     );
   }
 
-  return normalizeIdentifier(data, includedMap);
+  return normalizeIdentifier(
+    data,
+    includedMap,
+    visited,
+  );
 }
 
 function normalizeIdentifier(
   identifier: JsonApiResourceIdentifier,
   includedMap: IncludedMap,
+  visited: VisitedResources,
 ): NormalizedResource {
-  const includedResource = includedMap.get(
-    resourceKey(identifier),
-  );
+  const key = resourceKey(identifier);
+
+  if (visited.has(key)) {
+    return {
+      id: identifier.id,
+    };
+  }
+
+  const includedResource =
+    includedMap.get(key);
 
   if (!includedResource) {
     return {
@@ -59,13 +78,17 @@ function normalizeIdentifier(
   return normalizeJsonApiResource(
     includedResource,
     includedMap,
+    visited,
   );
 }
 
 function normalizeJsonApiResource(
   resource: JsonApiResource,
   includedMap: IncludedMap,
+  visited: VisitedResources = new Set(),
 ): NormalizedResource {
+  const key = resourceKey(resource);
+
   const normalized: NormalizedResource = {
     id: resource.id,
     ...resource.attributes,
@@ -75,12 +98,17 @@ function normalizeJsonApiResource(
     return normalized;
   }
 
+  const nextVisited = new Set(visited);
+
+  nextVisited.add(key);
+
   for (const [name, relationship] of Object.entries(
     resource.relationships,
   )) {
     normalized[name] = normalizeRelationship(
       relationship.data,
       includedMap,
+      nextVisited,
     );
   }
 
@@ -93,12 +121,16 @@ export function normalizeJsonApi(
     | JsonApiResource[]
     | null,
   included: JsonApiResource[] = [],
-) {
+):
+  | NormalizedResource
+  | NormalizedResource[]
+  | null {
   if (data === null) {
     return null;
   }
 
-  const includedMap = buildIncludedMap(included);
+  const includedMap =
+    buildIncludedMap(included);
 
   if (Array.isArray(data)) {
     return data.map((resource) =>

@@ -22,7 +22,11 @@ module Api
       def show
         render json: PostSerializer.new(
           @post,
-          include: [:user]
+          include: [
+            :user,
+            :comments,
+            :"comments.user"
+          ]
         ).serializable_hash,
         status: :ok  
       end

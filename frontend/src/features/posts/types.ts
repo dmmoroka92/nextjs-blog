@@ -1,5 +1,6 @@
 import { User } from "../auth/types/user";
 import type { JSONContent } from "@tiptap/core";
+import { Comment } from "../comments/types";
 
 export type PostStatus =
   | "draft"
@@ -20,4 +21,5 @@ export type Post = {
   tags: string[]
 
   user: User
+  comments: Comment[]
 };
