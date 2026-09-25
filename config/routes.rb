@@ -18,6 +18,8 @@ Rails.application.routes.draw do
       resources :posts,
                 param: :slug,
                 only: %i[index show create update destroy]
+
+      resource :dashboard, only: %i[show]          
     end
   end
 end

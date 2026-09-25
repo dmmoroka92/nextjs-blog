@@ -20,8 +20,6 @@ async function PostShow({
 
   const result = await getPost({ slug });
 
-  console.log("getUser result:", result)
-
   if (!result.success || !result.data) {
     notFound();
   }

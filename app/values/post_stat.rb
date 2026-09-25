@@ -1,0 +1,1 @@
+PostStat = Data.define(:label, :value)
