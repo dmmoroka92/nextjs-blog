@@ -18,7 +18,20 @@ export const API_ROUTES = {
     index: buildRoute("/posts"),
     show: (slug: string) => buildRoute(`/posts/${slug}`),
     update: (slug: string) => buildRoute(`/posts/${slug}`),
-    delete: (slug: string) => buildRoute(`/posts/${slug}`)
+    delete: (slug: string) => buildRoute(`/posts/${slug}`),
+
+    comments: {
+      index: (postSlug: string) => buildRoute(`/posts/${postSlug}/comments`),
+      create: (postSlug: string) => buildRoute(`/posts/${postSlug}/comments`),
+      update: (
+        postSlug: number,
+        commentId: string
+      ) => buildRoute(`/posts/${postSlug}/comments/${commentId}`),
+      destroy: (
+        postSlug: number,
+        commentId: string
+      ) => buildRoute(`/posts/${postSlug}/comments/${commentId}`)
+    }
   },
 
   dashboard: {

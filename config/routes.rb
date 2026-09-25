@@ -17,7 +17,9 @@ Rails.application.routes.draw do
 
       resources :posts,
                 param: :slug,
-                only: %i[index show create update destroy]
+                only: %i[index show create update destroy] do
+        resources :comments, only: %i[index create update destroy]
+      end
 
       resource :dashboard, only: %i[show]          
     end

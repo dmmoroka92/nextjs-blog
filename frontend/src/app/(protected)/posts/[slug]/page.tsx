@@ -1,4 +1,4 @@
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, MessageSquare } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
@@ -16,15 +16,15 @@ type PostShowProps = {
 async function PostShow({
   params,
 }: PostShowProps) {
-  const { slug } = await params
+  const { slug } = await params;
 
-  const result = await getPost({ slug })
+  const result = await getPost({ slug });
 
   if (!result.success || !result.data) {
-    notFound()
+    notFound();
   }
 
-  const post = result.data
+  const post = result.data;
 
   return (
     <article className="mx-auto w-full max-w-4xl">
@@ -67,7 +67,8 @@ async function PostShow({
 
           <div>
             <p className="text-sm font-medium text-zinc-200">
-              {post.user.firstName} {post.user.lastName}
+              {post.user.firstName}{" "}
+              {post.user.lastName}
             </p>
 
             <p className="mt-0.5 text-sm text-zinc-500">
@@ -107,11 +108,127 @@ async function PostShow({
       </header>
 
       {post.content && (
-        <div className="mt-10">
-          <PostContentRenderer content={post.content} />
-        </div>
+        <section
+          className="
+            mt-10 max-h-[60vh] overflow-y-auto
+            border-y border-zinc-800
+            py-8 pr-4
+          "
+        >
+          <PostContentRenderer
+            content={post.content}
+          />
+        </section>
       )}
+
+      <section className="mt-10">
+        <div className="flex items-center gap-2">
+          <MessageSquare className="size-5 text-zinc-400" />
+
+          <h2 className="text-xl font-semibold text-zinc-100">
+            Comments
+          </h2>
+
+          <span className="text-sm text-zinc-500">
+            2
+          </span>
+        </div>
+
+        <form className="mt-6">
+          <textarea
+            rows={3}
+            placeholder="Write a comment..."
+            className="
+              w-full resize-none rounded-lg
+              border border-zinc-800 bg-zinc-900/50
+              px-4 py-3 text-sm text-zinc-100
+              outline-none transition-colors
+              placeholder:text-zinc-600
+              focus:border-emerald-500
+            "
+          />
+
+          <div className="mt-3 flex justify-end">
+            <button
+              type="submit"
+              className="
+                rounded-md bg-emerald-300
+                px-4 py-2
+                text-sm font-medium text-zinc-950
+                transition-colors
+                hover:bg-emerald-200
+              "
+            >
+              Comment
+            </button>
+          </div>
+        </form>
+
+        <div className="mt-8 divide-y divide-zinc-800">
+          <Comment
+            initials="JD"
+            name="Jane Doe"
+            date="Sep 25, 2026"
+          >
+            Great explanation. The transaction example
+            made the concept much clearer.
+          </Comment>
+
+          <Comment
+            initials="AM"
+            name="Alex Morgan"
+            date="Sep 24, 2026"
+          >
+            Would be interesting to see an example using
+            nested transactions as well.
+          </Comment>
+        </div>
+      </section>
     </article>
+  );
+}
+
+type CommentProps = {
+  initials: string;
+  name: string;
+  date: string;
+  children: React.ReactNode;
+};
+
+function Comment({
+  initials,
+  name,
+  date,
+  children,
+}: CommentProps) {
+  return (
+    <div className="flex gap-3 py-6">
+      <div
+        className="
+          flex size-9 shrink-0 items-center justify-center
+          rounded-full bg-zinc-800
+          text-xs font-medium text-zinc-300
+        "
+      >
+        {initials}
+      </div>
+
+      <div className="min-w-0 flex-1">
+        <div className="flex items-center gap-2">
+          <span className="text-sm font-medium text-zinc-200">
+            {name}
+          </span>
+
+          <span className="text-xs text-zinc-600">
+            {date}
+          </span>
+        </div>
+
+        <p className="mt-2 text-sm leading-6 text-zinc-400">
+          {children}
+        </p>
+      </div>
+    </div>
   );
 }
 

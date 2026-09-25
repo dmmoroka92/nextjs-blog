@@ -4,10 +4,6 @@ class Post < ApplicationRecord
   IMAGE_SIZE_MEGABYTES = 5
   IMAGE_TYPES = %w[jpeg png webp].freeze
 
-  belongs_to :user
-
-  has_one_attached :cover_image
-
   enum :status, {
     draft: 0,
     published: 1,
@@ -22,6 +18,11 @@ class Post < ApplicationRecord
 
   validate :cover_image_type
   validate :cover_image_size
+
+
+  belongs_to :user
+  has_many :comments, dependent: :destroy
+  has_one_attached :cover_image
 
   scope :popular_tags, ->(limit = 6) do
     tag_counts
