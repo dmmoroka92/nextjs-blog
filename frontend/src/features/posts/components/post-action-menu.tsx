@@ -4,6 +4,8 @@ import { cn } from "@/lib/utils/general/cn";
 import { Archive, Ellipsis, Pencil, Trash2 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { RecentPost } from "./recent-posts";
+import { APP_ROUTES } from "@/constants/routes";
+import { useRouter } from "next/navigation";
 
 const menuItemClassName = cn(
   "flex w-full items-center gap-2",
@@ -18,6 +20,7 @@ function PostActionMenu({
 }: {
   post: RecentPost
 }) {
+  const router = useRouter()
   const [open, setOpen] = useState(false);
 
   const menuRef = useRef<HTMLDivElement>(null);
@@ -46,9 +49,9 @@ function PostActionMenu({
   }, []);
 
   function handleEdit() {
-    console.log("Edit post:", post);
-
-    setOpen(false);
+    router.push(
+      APP_ROUTES.posts.edit(post.slug)
+    )
   }
 
   function handleDelete() {

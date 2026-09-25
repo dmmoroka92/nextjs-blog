@@ -37,7 +37,8 @@ export const postSchema = z.object({
 
   status: z.enum([
     "draft",
-    "published"
+    "published",
+    "archived"
   ]),
 
   tags: z

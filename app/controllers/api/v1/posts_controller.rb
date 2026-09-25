@@ -1,6 +1,8 @@
 module Api
   module V1
     class PostsController < ApplicationController
+      before_action :set_post, only: %i[show update destroy]
+
       def index
         posts = Posts::IndexQuery.call(
           relation: current_user.posts,
@@ -18,10 +20,8 @@ module Api
       end
 
       def show
-        post = current_user.posts.find_by!(slug: params[:slug])
-
         render json: PostSerializer.new(
-          post,
+          @post,
           include: [:user]
         ).serializable_hash,
         status: :ok  
@@ -32,7 +32,7 @@ module Api
         
         if post.save
           render json: PostSerializer.new(
-          post,
+            post,
             include: [:user],
             meta: { message: "Post created successfully" }
           ).serializable_hash,
@@ -47,7 +47,19 @@ module Api
       end
 
       def update
-
+        if @post.update!(post_params)
+          render json: PostSerializer.new(
+            @post,
+            include: [:user],
+            meta: { message: "Post updated successfully" }
+          ).serializable_hash
+        else
+          render json: {
+            meta: {
+              errors: @post.errors
+            }
+          }, status: :unprocessable_entity
+        end
       end
 
       def destroy
@@ -55,6 +67,10 @@ module Api
       end
 
       private
+
+      def set_post
+        @post = current_user.posts.find_by!(slug: params[:slug])
+      end
 
       def post_params
         permitted = params.require(:post).permit(

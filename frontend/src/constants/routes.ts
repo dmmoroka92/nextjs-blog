@@ -16,21 +16,25 @@ export const API_ROUTES = {
   posts: {
     create: buildRoute("/posts"),
     index: buildRoute("/posts"),
+    update: (slug: string) => buildRoute(`/posts/${slug}`),
     show: (slug: string) => buildRoute(`/posts/${slug}`)
   },
+
   dashboard: {
     show: buildRoute("/dashboard")
   }
-} as const;
+} as const
 
 export const APP_ROUTES = {
   auth: {
     login: "/login",
     signUp: "/sign-up"
   },
+  
   posts: {
-    new: "/posts/new",
     index: "/posts",
-    show: (slug: string) => `/posts/${slug}`
+    new: "/posts/new",
+    show: (slug: string) => `/posts/${slug}`,
+    edit: (slug: string) => `/posts/${slug}/edit`
   }
-} as const;
+} as const

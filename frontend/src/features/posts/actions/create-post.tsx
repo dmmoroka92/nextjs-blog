@@ -1,10 +1,10 @@
 "use server"
 
+import { API_ROUTES } from "@/constants/routes";
 import { ApiResponse } from "@/features/auth/types/api";
+import { apiFetch } from "@/lib/api/client";
 import { PostFormData } from "../schemas/post.schema";
 import { Post } from "../types";
-import { apiFetch } from "@/lib/api/client";
-import { API_ROUTES, APP_ROUTES } from "@/constants/routes";
 
 type PostMeta = {
   message: string

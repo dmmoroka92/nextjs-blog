@@ -2,6 +2,7 @@
 
 import InputField from "@/app/components/ui/forms/input-field";
 import SelectField from "@/app/components/ui/forms/select-field";
+import TagInput from "@/app/components/ui/forms/tag-input";
 import { APP_ROUTES } from "@/constants/routes";
 import { cn } from "@/lib/utils/general/cn";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -11,11 +12,16 @@ import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { createPost } from "../actions/create-post";
+import { updatePost } from "../actions/update-post";
 import { PostFormData, postSchema } from "../schemas/post.schema";
+import { Post } from "../types";
 import { PostEditor } from "./post-editor/post-editor";
-import TagInput from "@/app/components/ui/forms/tag-input";
 
-function PostForm() {
+type PostFormProps = {
+  post?: Post
+}
+
+function PostForm({ post }: PostFormProps) {
   const router = useRouter()
   const {
     control,
@@ -29,11 +35,12 @@ function PostForm() {
   } = useForm<PostFormData>({
     resolver: zodResolver(postSchema),
     defaultValues: {
-      title: "",
-      slug: "",
-      excerpt: "",
-      status: "draft",
-      tags: []
+      title: post?.title ?? "",
+      slug: post?.slug ?? "",
+      excerpt: post?.excerpt ?? "",
+      status: post?.status ?? "draft",
+      tags: post?.tags ?? [],
+      content: post?.content ?? undefined,
     }
   })
 
@@ -58,20 +65,34 @@ function PostForm() {
   }, [coverImage]);
 
   async function onSubmit(postData: PostFormData) {
-    const result = await createPost(postData);
+    const result = post
+      ? await updatePost(post.slug, postData)
+      : await createPost(postData);
   
     if (!result.success) {
-      const messages = Object.values(result.errors).flat();
+      const messages = Object.values(
+        result.errors,
+      ).flat();
   
-      toast.error("Post creation failed", {
-        description: messages.join("\n"),
-      });
+      toast.error(
+        post
+          ? "Post update failed"
+          : "Post creation failed",
+        {
+          description: messages
+            .map((error) => error.message)
+            .join("\n"),
+        },
+      );
   
       return;
     }
   
     toast.success(
-      result.meta?.message ?? "Post created successfully",
+      result.meta?.message ??
+        (post
+          ? "Post updated successfully"
+          : "Post created successfully"),
     );
   
     router.push(APP_ROUTES.posts.index);
@@ -276,7 +297,15 @@ function PostForm() {
             "transition-colors hover:bg-emerald-200",
           )}
         >
-          { isSubmitting ? "Publishing..." : "Publish" }
+          {
+            isSubmitting
+              ? post
+                ? "Updating..."
+                : "Publishing..."
+              : post
+                ? "Update"
+                : "Publish"
+          }
         </button>
       </div>
     </form>

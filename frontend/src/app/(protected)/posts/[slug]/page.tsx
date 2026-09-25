@@ -16,15 +16,15 @@ type PostShowProps = {
 async function PostShow({
   params,
 }: PostShowProps) {
-  const { slug } = await params;
+  const { slug } = await params
 
-  const result = await getPost({ slug });
+  const result = await getPost({ slug })
 
   if (!result.success || !result.data) {
-    notFound();
+    notFound()
   }
 
-  const post = result.data;
+  const post = result.data
 
   return (
     <article className="mx-auto w-full max-w-4xl">
