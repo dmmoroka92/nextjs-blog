@@ -20,7 +20,7 @@ gem "devise"
 
 gem "jsonapi-serializer"
 gem "jwt"
-gem "json", "2.21.2"
+gem "json", "3.1.0"
 
 # Use the database-backed adapters for Rails.cache, Active Job, and Action Cable
 gem "solid_cache"
